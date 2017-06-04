@@ -102,7 +102,8 @@ public class Percolation {
      */
     public boolean percolates() {
 
-        boolean conneted = mWeightedQuickUnionUF.connected(mTopIndex, mBottomIndex);
+        boolean conneted = mWeightedQuickUnionUF.connected(mTopIndex,
+                mBottomIndex);
 
         return conneted;
     }
@@ -179,9 +180,11 @@ public class Percolation {
         int Botom = mBottomIndex;
 
         int indexOfLastElementInLastLine = Botom - 1;
-        int indexOfFirstElementInLastLine = indexOfLastElementInLastLine - mSizeOfLineInGrid + 1;
+        int indexOfFirstElementInLastLine = indexOfLastElementInLastLine
+                - mSizeOfLineInGrid + 1;
 
-        for (int i = indexOfFirstElementInLastLine; i <= indexOfLastElementInLastLine; i++) {
+        for (int i = indexOfFirstElementInLastLine; i <=
+                indexOfLastElementInLastLine; i++) {
             mWeightedQuickUnionUF.union(Botom, i);
         }
     }
@@ -190,7 +193,8 @@ public class Percolation {
         int Top = mTopIndex;
 
         int indexOfFirstElementInFirstLine = Top + 1;
-        int indexOfLastElementInFirstLine = indexOfFirstElementInFirstLine + mSizeOfLineInGrid - 1;
+        int indexOfLastElementInFirstLine = indexOfFirstElementInFirstLine
+                + mSizeOfLineInGrid - 1;
 
         for (int i = indexOfFirstElementInFirstLine; i <= indexOfLastElementInFirstLine; i++) {
             mWeightedQuickUnionUF.union(Top, i);
@@ -219,53 +223,53 @@ public class Percolation {
 
         p = new Percolation(4);
 
-        p.open(1,1);
-        p.open(1,1);
-        p.open(1,1);
+        p.open(1, 1);
+        p.open(1, 1);
+        p.open(1, 1);
 
-        System.out.println(p.isOpen(1,1) == true);
-        System.out.println(p.isFull(1,1) == false);
+        System.out.println(p.isOpen(1, 1) == true);
+        System.out.println(p.isFull(1, 1) == false);
 
-        p.open(2,1);
-        p.open(2,2);
+        p.open(2, 1);
+        p.open(2, 2);
 
         System.out.println(p.percolates() == false);
         System.out.println(p.numberOfOpenSites() == 3);
 
-        p.open(3,1);
+        p.open(3, 1);
 
-        p.open(4,1);
+        p.open(4, 1);
 
         System.out.println(p.percolates() == true);
 
 
         p = new Percolation(4);
 
-        p.open(1,1);
-        p.open(1,1);
-        p.open(1,1);
+        p.open(1, 1);
+        p.open(1, 1);
+        p.open(1, 1);
 
-        System.out.println(p.isOpen(1,3) == false);
-        System.out.println(p.isFull(1,2) == true);
+        System.out.println(p.isOpen(1, 3) == false);
+        System.out.println(p.isFull(1, 2) == true);
 
-        p.open(2,1);
-        p.open(2,2);
-        p.open(2,2);
-        p.open(2,3);
+        p.open(2, 1);
+        p.open(2, 2);
+        p.open(2, 2);
+        p.open(2, 3);
 
         System.out.println(p.percolates() == false);
         System.out.println(p.numberOfOpenSites() == 4);
 
-        p.open(3,1);
-        p.open(3,3);
+        p.open(3, 1);
+        p.open(3, 3);
 
         System.out.println(p.percolates() == false);
 
-        p.open(3,4);
+        p.open(3, 4);
 
         System.out.println(p.percolates() == false);
 
-        p.open(4,4);
+        p.open(4, 4);
 
         System.out.println(p.percolates() == true);
     }
