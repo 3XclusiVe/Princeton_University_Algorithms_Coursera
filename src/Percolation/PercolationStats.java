@@ -16,11 +16,12 @@ public class PercolationStats {
 
     /**
      * perform trials independent experiments on an n-by-n grid
+     *
      * @param SizeOfGrid size of n-by-n grid
-     * @param trials number of experiments
+     * @param trials     number of experiments
      */
     public PercolationStats(int SizeOfGrid, int trials) {
-        if((trials <= 0) || (SizeOfGrid <= 0)) {
+        if ((trials <= 0) || (SizeOfGrid <= 0)) {
             throw new IllegalArgumentException();
         }
 
@@ -40,7 +41,7 @@ public class PercolationStats {
                 }
             }
 
-            percolationThreshold[i] = (double)openedSites / (SizeOfGrid * SizeOfGrid);
+            percolationThreshold[i] = (double) openedSites / (SizeOfGrid * SizeOfGrid);
 
             openedSites = 0;
 
@@ -49,9 +50,10 @@ public class PercolationStats {
 
     /**
      * calculates mean of percolation threshold
+     *
      * @return mean of percolation threshold
      */
-    public double mean()  {
+    public double mean() {
         return StdStats.mean(percolationThreshold);
     }
 
@@ -59,6 +61,7 @@ public class PercolationStats {
 
     /**
      * calculates standard deviation of percolation threshold
+     *
      * @return standard deviation of percolation threshold
      */
     public double stddev() {
@@ -67,6 +70,7 @@ public class PercolationStats {
 
     /**
      * caclculates low  endpoint of 95% confidence interval
+     *
      * @return low  endpoint of 95% confidence interval
      */
     public double confidenceLo() {
@@ -75,9 +79,10 @@ public class PercolationStats {
 
     /**
      * calculates high endpoint of 95% confidence interval
+     *
      * @return high endpoint of 95% confidence interval
      */
-    public double confidenceHi()       {
+    public double confidenceHi() {
         return mean() + ((1.96 * stddev()) / Math.sqrt(experementsNumber));
     }
 
