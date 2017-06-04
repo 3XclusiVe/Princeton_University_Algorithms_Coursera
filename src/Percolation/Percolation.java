@@ -44,7 +44,7 @@ public class Percolation {
         try {
             alreadyOpened = mGridElementOpened[row - 1][col - 1];
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IndexOutOfBoundsException(e.getMessage());
         }
 
         if (!alreadyOpened) {
@@ -66,7 +66,7 @@ public class Percolation {
         try {
             return mGridElementOpened[row - 1][col - 1];
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IndexOutOfBoundsException(e.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public class Percolation {
         try {
             return !mGridElementOpened[row - 1][col - 1];
         } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IndexOutOfBoundsException(e.getMessage());
         }
     }
 
