@@ -17,11 +17,11 @@ public class PercolationStats {
     /**
      * perform trials independent experiments on an n-by-n grid
      *
-     * @param SizeOfGrid size of n-by-n grid
+     * @param sizeOfGrid size of n-by-n grid
      * @param trials     number of experiments
      */
-    public PercolationStats(int SizeOfGrid, int trials) {
-        if ((trials <= 0) || (SizeOfGrid <= 0)) {
+    public PercolationStats(int sizeOfGrid, int trials) {
+        if ((trials <= 0) || (sizeOfGrid <= 0)) {
             throw new IllegalArgumentException();
         }
 
@@ -29,19 +29,19 @@ public class PercolationStats {
         mExperementsNumber = trials;
 
         for (int i = 0; i < trials; i++) {
-            Percolation percolation = new Percolation(SizeOfGrid);
+            Percolation percolation = new Percolation(sizeOfGrid);
 
             while (!percolation.percolates()) {
-                int row = StdRandom.uniform(1, SizeOfGrid + 1);
-                int col = StdRandom.uniform(1, SizeOfGrid + 1);
+                int row = StdRandom.uniform(1, sizeOfGrid + 1);
+                int col = StdRandom.uniform(1, sizeOfGrid + 1);
 
-                if (percolation.isFull(row, col)) {
+                if (!percolation.isOpen(row, col)) {
                     percolation.open(row, col);
                     mOpenedSites++;
                 }
             }
 
-            mPercolationThreshold[i] = (double) mOpenedSites / (SizeOfGrid * SizeOfGrid);
+            mPercolationThreshold[i] = (double) mOpenedSites / (sizeOfGrid * sizeOfGrid);
 
             mOpenedSites = 0;
 

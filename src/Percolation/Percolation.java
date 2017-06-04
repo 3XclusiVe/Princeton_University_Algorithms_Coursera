@@ -1,8 +1,7 @@
 package Percolation;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-
-import static java.lang.Math.ceil;
+import java.lang.Math;
 
 public class Percolation {
 
@@ -79,11 +78,14 @@ public class Percolation {
      * @return is site (row, col) full?
      */
     public boolean isFull(int row, int col) {
-        try {
-            return !mGridElementOpened[row - 1][col - 1];
-        } catch (Exception e) {
-            throw new IndexOutOfBoundsException(e.getMessage());
+        if ((row > mSizeOfLineInGrid) || (col > mSizeOfLineInGrid) || (row < 1)
+                || (col < 1)) {
+            throw new IndexOutOfBoundsException();
         }
+        int linearIndex = matrixIndexToLinearIndex(row, col);
+
+        return mWeightedQuickUnionUF.connected(mTopIndex, linearIndex);
+
     }
 
     /**
@@ -114,35 +116,35 @@ public class Percolation {
         if (inFirstLine(linearIndex)) {
             mWeightedQuickUnionUF.union(linearIndex, mTopIndex);
         } else {
-            int IndexOfUpperElement = linearIndex - mSizeOfLineInGrid;
+            int indexOfUpperElement = linearIndex - mSizeOfLineInGrid;
 
-            if (isOpen(IndexOfUpperElement)) {
-                mWeightedQuickUnionUF.union(linearIndex, IndexOfUpperElement);
+            if (isOpen(indexOfUpperElement)) {
+                mWeightedQuickUnionUF.union(linearIndex, indexOfUpperElement);
             }
         }
 
         if (inLastLine(linearIndex)) {
             mWeightedQuickUnionUF.union(linearIndex, mBottomIndex);
         } else {
-            int IndexOfDownElement = linearIndex + mSizeOfLineInGrid;
+            int indexOfDownElement = linearIndex + mSizeOfLineInGrid;
 
-            if (isOpen(IndexOfDownElement)) {
-                mWeightedQuickUnionUF.union(linearIndex, IndexOfDownElement);
+            if (isOpen(indexOfDownElement)) {
+                mWeightedQuickUnionUF.union(linearIndex, indexOfDownElement);
             }
         }
 
-        int LeftElement = linearIndex - 1;
-        if (linearIndexToColumnNumber(LeftElement) != mSizeOfLineInGrid) {
-            if (isOpen(LeftElement)) {
-                mWeightedQuickUnionUF.union(linearIndex, LeftElement);
+        int leftElement = linearIndex - 1;
+        if (linearIndexToColumnNumber(leftElement) != mSizeOfLineInGrid) {
+            if (isOpen(leftElement)) {
+                mWeightedQuickUnionUF.union(linearIndex, leftElement);
             }
 
         }
 
-        int RightElement = linearIndex + 1;
-        if (linearIndexToColumnNumber(RightElement) != 1) {
-            if (isOpen(RightElement)) {
-                mWeightedQuickUnionUF.union(linearIndex, RightElement);
+        int rightElement = linearIndex + 1;
+        if (linearIndexToColumnNumber(rightElement) != 1) {
+            if (isOpen(rightElement)) {
+                mWeightedQuickUnionUF.union(linearIndex, rightElement);
             }
         }
     }
@@ -155,7 +157,7 @@ public class Percolation {
     }
 
     private int linearIndexToRowNumber(int linearIndex) {
-        return (int) ceil(((double) linearIndex) / mSizeOfLineInGrid);
+        return (int) Math.ceil(((double) linearIndex) / mSizeOfLineInGrid);
     }
 
     private int linearIndexToColumnNumber(int linearIndex) {
@@ -173,33 +175,6 @@ public class Percolation {
 
     private boolean inLastLine(int linearIndex) {
         return linearIndex > mSizeOfLineInGrid * (mSizeOfLineInGrid - 1);
-    }
-
-
-    private void ConnectBottomAndLastLineOfGrid() {
-        int Botom = mBottomIndex;
-
-        int indexOfLastElementInLastLine = Botom - 1;
-        int indexOfFirstElementInLastLine = indexOfLastElementInLastLine
-                - mSizeOfLineInGrid + 1;
-
-        for (int i = indexOfFirstElementInLastLine; i <=
-                indexOfLastElementInLastLine; i++) {
-            mWeightedQuickUnionUF.union(Botom, i);
-        }
-    }
-
-    private void ConnectTopAndFirstLineOfGrid() {
-        int Top = mTopIndex;
-
-        int indexOfFirstElementInFirstLine = Top + 1;
-        int indexOfLastElementInFirstLine = indexOfFirstElementInFirstLine
-                + mSizeOfLineInGrid - 1;
-
-        for (int i = indexOfFirstElementInFirstLine; i <= indexOfLastElementInFirstLine; i++) {
-            mWeightedQuickUnionUF.union(Top, i);
-        }
-
     }
 
     /**
@@ -228,7 +203,7 @@ public class Percolation {
         p.open(1, 1);
 
         System.out.println(p.isOpen(1, 1) == true);
-        System.out.println(p.isFull(1, 1) == false);
+        System.out.println(p.isFull(1, 1) == true);
 
         p.open(2, 1);
         p.open(2, 2);
@@ -250,10 +225,11 @@ public class Percolation {
         p.open(1, 1);
 
         System.out.println(p.isOpen(1, 3) == false);
-        System.out.println(p.isFull(1, 2) == true);
+        System.out.println(p.isFull(1, 2) == false);
 
         p.open(2, 1);
         p.open(2, 2);
+        System.out.println(p.isFull(2, 2) == true);
         p.open(2, 2);
         p.open(2, 3);
 
