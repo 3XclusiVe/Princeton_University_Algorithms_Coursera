@@ -4,9 +4,6 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
-/**
- * Created by user on 04.06.17.
- */
 
 public class PercolationStats {
 

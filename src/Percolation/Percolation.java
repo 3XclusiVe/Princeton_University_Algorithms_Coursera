@@ -3,6 +3,11 @@ package Percolation;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import java.lang.Math;
 
+/**
+ * This class creates a system that
+ * presents a n-by-n Grid and then
+ * checks this System on percolate
+ */
 public class Percolation {
 
     private WeightedQuickUnionUF mWeightedQuickUnionUF;
