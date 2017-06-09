@@ -4,7 +4,7 @@ package Deques_and_Randomized_Queues;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
-import static edu.princeton.cs.algs4.StdOut.print;
+import static edu.princeton.cs.algs4.StdOut.println;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -54,13 +54,10 @@ public class Deque<Item> implements Iterable<Item> {
 
         if(isEmpty()) {
             mHead = new Node();
-            mTale = new Node();
-
             mHead.item = newItem;
-            mTale.item = newItem;
-
             mHead.next = null;
-            mTale.next = null;
+            mTale = mHead;
+
         } else {
 
             Node lastHead = mHead;
@@ -85,21 +82,17 @@ public class Deque<Item> implements Iterable<Item> {
 
         if(isEmpty()) {
             mHead = new Node();
-            mTale = new Node();
-
             mHead.item = newItem;
-            mTale.item = newItem;
-
             mHead.next = null;
-            mTale.next = null;
+            mTale = mHead;
 
         } else {
 
             Node lastTale = mTale;
 
             mTale = new Node();
+            lastTale.next = mTale;
             mTale.item = newItem;
-            mTale.next = lastTale;
         }
 
         mSize++;
@@ -120,8 +113,10 @@ public class Deque<Item> implements Iterable<Item> {
         Node lastHead = mHead;
 
         mHead = new Node();
-        mHead.item = lastHead.next.item;
-        mHead.next = lastHead.next.next;
+        if(lastHead.next != null) {
+            mHead.item = lastHead.next.item;
+            mHead.next = lastHead.next.next;
+        }
 
         mSize--;
 
@@ -143,9 +138,10 @@ public class Deque<Item> implements Iterable<Item> {
         Node lastTale = mTale;
 
         mTale = new Node();
-        mTale.item = lastTale.next.item;
-        mTale.next = lastTale.next.next;
-
+        if(lastTale.next != null) {
+            mTale.item = lastTale.next.item;
+            mTale.next = lastTale.next.next;
+        }
         mSize--;
 
         return lastTale.item;
@@ -164,10 +160,6 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NullPointerException("cant add null pointer " +
                     "element");
         }
-    }
-
-    private boolean isFirstElement() {
-        return mSize == 0;
     }
 
     private class DequeIterator implements Iterator<Item> {
@@ -208,16 +200,25 @@ public class Deque<Item> implements Iterable<Item> {
 
         Deque<String> deque = new Deque<String>();
 
-        print(deque.isEmpty());
-        print(deque.size());
+        println(deque.isEmpty());
+        println(deque.size());
 
         deque.addFirst("ABC");
         deque.addLast("XYZ");
 
+        println(deque.removeLast());
+        println(deque.removeLast());
+        println();
+
+        deque.addFirst("QQQ");
+        deque.addFirst("WWW");
+        deque.addFirst("zxc");
+        deque.addFirst("oioi");
+        deque.addLast("QQQ");
+        deque.addLast("123wefwfe111");
+
         for (String element : deque) {
-            print(element);
+            println(element);
         }
-
-
     }
 }
