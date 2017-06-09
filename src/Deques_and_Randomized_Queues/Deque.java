@@ -12,6 +12,7 @@ public class Deque<Item> implements Iterable<Item> {
     private class Node {
         Item item;
         Node next;
+        Node previous;
     }
 
     private int mSize;
@@ -58,6 +59,7 @@ public class Deque<Item> implements Iterable<Item> {
             mHead = new Node();
             mHead.item = newItem;
             mHead.next = null;
+            mHead.previous = null;
             mTale = mHead;
 
         } else {
@@ -67,6 +69,7 @@ public class Deque<Item> implements Iterable<Item> {
             mHead = new Node();
             mHead.item = newItem;
             mHead.next = lastHead;
+            lastHead.previous = mHead;
 
         }
 
@@ -96,6 +99,7 @@ public class Deque<Item> implements Iterable<Item> {
             mTale = new Node();
             lastTale.next = mTale;
             mTale.item = newItem;
+            mTale.previous = lastTale;
         }
 
         mSize++;
@@ -116,10 +120,9 @@ public class Deque<Item> implements Iterable<Item> {
 
         Node lastHead = mHead;
 
-        mHead = new Node();
         if (lastHead.next != null) {
-            mHead.item = lastHead.next.item;
-            mHead.next = lastHead.next.next;
+            mHead = lastHead.next;
+            mHead.previous = null;
         }
 
         mSize--;
@@ -142,10 +145,9 @@ public class Deque<Item> implements Iterable<Item> {
 
         Node lastTale = mTale;
 
-        mTale = new Node();
-        if (lastTale.next != null) {
-            mTale.item = lastTale.next.item;
-            mTale.next = lastTale.next.next;
+        if (lastTale.previous != null) {
+            mTale = lastTale.previous;
+            mTale.next = null;
         }
         mSize--;
 
@@ -272,9 +274,26 @@ public class Deque<Item> implements Iterable<Item> {
         allElements = new String();
         for (String element : deque) {
             allElements += element;
-            println(element);
         }
         testCase(allElements.equals("B"));
+
+        testCase(deque.removeLast().equals("B"));
+        testCase(deque.isEmpty());
+        testCase(deque.size() == 0);
+
+        deque.addFirst("AAv");
+        deque.addFirst("122");
+        deque.addLast("A213");
+        deque.addLast("11fg>");
+
+        allElements = new String();
+        for (String element : deque) {
+            allElements += element;
+        }
+
+        testCase(allElements.equals("122AAvA21311fg>"));
+
+
     }
 
     private static void testCase(boolean testCase) {
