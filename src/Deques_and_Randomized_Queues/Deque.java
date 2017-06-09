@@ -2,6 +2,7 @@ package Deques_and_Randomized_Queues;
 
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 import static edu.princeton.cs.algs4.StdOut.println;
@@ -45,14 +46,15 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * add the item to the front
+     *
      * @param newItem item to add to the front
-     * performance requirements: Constant worst-case time
+     *                performance requirements: Constant worst-case time
      */
     public void addFirst(Item newItem) {
 
         checkNullPointerParameter(newItem);
 
-        if(isEmpty()) {
+        if (isEmpty()) {
             mHead = new Node();
             mHead.item = newItem;
             mHead.next = null;
@@ -73,14 +75,15 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * add the item to the end
+     *
      * @param newItem item to add to the end
-     * performance requirements: Constant worst-case time
+     *                performance requirements: Constant worst-case time
      */
     public void addLast(Item newItem) {
 
         checkNullPointerParameter(newItem);
 
-        if(isEmpty()) {
+        if (isEmpty()) {
             mHead = new Node();
             mHead.item = newItem;
             mHead.next = null;
@@ -101,19 +104,20 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * remove and return the item from the front
+     *
      * @return item from the front
      * performance requirements: Constant worst-case time
      */
     public Item removeFirst() {
 
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new java.util.NoSuchElementException("list is empty");
         }
 
         Node lastHead = mHead;
 
         mHead = new Node();
-        if(lastHead.next != null) {
+        if (lastHead.next != null) {
             mHead.item = lastHead.next.item;
             mHead.next = lastHead.next.next;
         }
@@ -126,19 +130,20 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * remove and return the item from the end
+     *
      * @return item from the end
      * performance requirements: Constant worst-case time
      */
     public Item removeLast() {
 
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new java.util.NoSuchElementException("list is empty");
         }
 
         Node lastTale = mTale;
 
         mTale = new Node();
-        if(lastTale.next != null) {
+        if (lastTale.next != null) {
             mTale.item = lastTale.next.item;
             mTale.next = lastTale.next.next;
         }
@@ -154,9 +159,8 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
 
-
     private void checkNullPointerParameter(Item newItem) {
-        if(newItem == null) {
+        if (newItem == null) {
             throw new NullPointerException("cant add null pointer " +
                     "element");
         }
@@ -174,7 +178,7 @@ public class Deque<Item> implements Iterable<Item> {
         @Override
         public Item next() {
 
-            if(_current == null) {
+            if (_current == null) {
                 throw new java.util.NoSuchElementException("no elements in " +
                         "collection");
             }
@@ -196,29 +200,88 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
+    /**
+     * Unit-test like function:
+     * bad style but acceptable in this case
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         Deque<String> deque = new Deque<String>();
 
-        println(deque.isEmpty());
-        println(deque.size());
+        try {
+            deque.addFirst(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
 
-        deque.addFirst("ABC");
-        deque.addLast("XYZ");
+        try {
+            deque.addLast(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
 
-        println(deque.removeLast());
-        println(deque.removeLast());
-        println();
+        try {
+            deque.removeLast();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
 
-        deque.addFirst("QQQ");
-        deque.addFirst("WWW");
-        deque.addFirst("zxc");
-        deque.addFirst("oioi");
-        deque.addLast("QQQ");
-        deque.addLast("123wefwfe111");
+        try {
+            deque.removeFirst();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
 
+        try {
+            deque.iterator().remove();
+        } catch (UnsupportedOperationException e) {
+            testCase(true);
+        }
+
+        testCase(deque.isEmpty() == true);
+        testCase(deque.size() == 0);
+
+        deque.addFirst("A");
+        deque.addFirst("B");
+        deque.addFirst("C");
+        deque.addLast("X");
+        deque.addLast("Y");
+        deque.addLast("Z");
+
+        String allElements = new String();
         for (String element : deque) {
+            allElements += element;
+        }
+
+        testCase(allElements.equals("CBAXYZ"));
+        testCase(deque.size() == 6);
+        testCase(deque.isEmpty() == false);
+
+        deque = new Deque<String>();
+        deque.addFirst("A");
+        deque.addFirst("B");
+        deque.addFirst("C");
+
+        testCase(deque.removeLast().equals("A"));
+        testCase(deque.removeFirst().equals("C"));
+        testCase(deque.isEmpty() == false);
+        testCase(deque.size() == 1);
+
+        allElements = new String();
+        for (String element : deque) {
+            allElements += element;
             println(element);
+        }
+        testCase(allElements.equals("B"));
+    }
+
+    private static void testCase(boolean testCase) {
+        if (testCase == true) {
+            println("PASSED");
+        } else {
+            println("FAILED");
         }
     }
 }
