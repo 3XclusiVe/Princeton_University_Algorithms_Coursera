@@ -115,7 +115,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst() {
 
         if (isEmpty()) {
-            throw new java.util.NoSuchElementException("list is empty");
+            throw new java.util.NoSuchElementException("queue is empty");
         }
 
         Node lastHead = mHead;
@@ -140,7 +140,7 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
 
         if (isEmpty()) {
-            throw new java.util.NoSuchElementException("list is empty");
+            throw new java.util.NoSuchElementException("queue is empty");
         }
 
         Node lastTale = mTale;
@@ -293,6 +293,16 @@ public class Deque<Item> implements Iterable<Item> {
 
         testCase(allElements.equals("122AAvA21311fg>"));
 
+
+        Deque<Integer> deque1 = new Deque<Integer>();
+
+        int n = 1000000;
+        for(int i = 0; i < n; i++) {
+            deque1.addFirst(i);
+        }
+        for(int i = 0; i < n; i++) {
+            testCase(deque1.removeLast() == i);
+        }
 
     }
 
