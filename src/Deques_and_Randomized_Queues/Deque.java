@@ -7,6 +7,14 @@ import java.util.function.Consumer;
 
 import static edu.princeton.cs.algs4.StdOut.println;
 
+/**
+ * A double-ended queue or deque
+ * is a generalization of a stack and a queue that
+ * supports adding and removing items from either
+ * the front or the back of the data structure
+ *
+ * @param <Item> generic parameter
+ */
 public class Deque<Item> implements Iterable<Item> {
 
     private class Node {
@@ -297,10 +305,10 @@ public class Deque<Item> implements Iterable<Item> {
         Deque<Integer> deque1 = new Deque<Integer>();
 
         int n = 1000000;
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             deque1.addFirst(i);
         }
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             testCase(deque1.removeLast() == i);
         }
 

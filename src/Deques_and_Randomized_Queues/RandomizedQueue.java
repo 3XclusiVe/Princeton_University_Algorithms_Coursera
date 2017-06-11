@@ -3,15 +3,18 @@ package Deques_and_Randomized_Queues;
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
-import java.util.Spliterator;
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
-import java.util.jar.Pack200;
 
 import static edu.princeton.cs.algs4.StdOut.println;
 
 
 /**
- * Created by user on 11.06.17.
+ * A randomized queue is similar to a stack or queue,
+ * except that the item removed is chosen uniformly
+ * at random from items in the data structure.
+ *
+ * @param <Item> generic parameter
  */
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
@@ -22,6 +25,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * construct an empty randomized queue
+     * performance requirements: constant amortized time
      */
     public RandomizedQueue() {
         mQueueElement = (Item[]) new Object[1];
@@ -29,6 +33,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * @return is the queue empty?
+     * performance requirements: constant amortized time
      */
     public boolean isEmpty() {
         return mSize == 0;
@@ -36,6 +41,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * @return the number of items on the queue
+     * performance requirements: constant amortized time
      */
     public int size() {
         return mSize;
@@ -45,6 +51,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * add the item
      *
      * @param item item to add
+     *             performance requirements: constant amortized time
      */
     public void enqueue(Item item) {
 
@@ -79,6 +86,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * remove and return a random item
      *
      * @return random item
+     * performance requirements: constant amortized time
      */
     public Item dequeue() {
 
@@ -91,7 +99,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         Item elementToDelete = mQueueElement[queueElementToDeleteIndex];
 
         mQueueElement[queueElementToDeleteIndex] = lastElement;
-        mQueueElement[mSize] = null;
+        mQueueElement[mSize - 1] = null;
 
         if ((mSize > 0) && (mSize == mQueueElement.length / 4)) {
             resize(mQueueElement.length / 2);
@@ -106,6 +114,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * return (but do not remove) a random item
      *
      * @return random item
+     * performance requirements: constant amortized time
      */
     public Item sample() {
 
@@ -129,8 +138,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class RandomizedQueueIterator implements Iterator<Item> {
 
-        private int mCurrentIndex = StdRandom.uniform(mSize);
-        private int mNextCalls = 0;
+        private int mCurrentIndex;
+        private int mNextCalls;
+
+        public RandomizedQueueIterator() {
+            mCurrentIndex = StdRandom.uniform(mSize + 1) - 1;
+            mNextCalls = 0;
+        }
 
         @Override
         public boolean hasNext() {
@@ -139,6 +153,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             mNextCalls++;
             Item currentElement = mQueueElement[mCurrentIndex % mSize];
             mCurrentIndex++;
@@ -166,6 +183,46 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public static void main(String[] args) {
 
         RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
+
+        try {
+            queue.enqueue(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.dequeue();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.sample();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+
+        try {
+            queue.iterator().remove();
+        } catch (UnsupportedOperationException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.iterator().next();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        testCase(queue.size() == 0);
+        testCase(queue.size() == 0);
+        testCase(queue.isEmpty());
+        testCase(queue.isEmpty());
+        queue.enqueue(39);
+        testCase(queue.dequeue() == 39);
+
+
         for (int i = 0; i < 10; i++) {
             queue.enqueue(i);
         }
@@ -174,5 +231,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             println(queue.dequeue());
         }
 
+
+    }
+
+    private static void testCase(boolean testCase) {
+        if (testCase == true) {
+            println("PASSED");
+        } else {
+            println("FAILED");
+        }
     }
 }
