@@ -36,7 +36,7 @@ public class FastCollinearPoints {
             int end = start + 2;
 
             while (end < points.length) {
-                if(ThreePointsInOneLine(points, start)) {
+                if(FourPointsInOneLine(points, start, origin)) {
                     Point[] pointsInOneLine = new Point[4];
                     pointsInOneLine[0] = origin;
                     for(int i = 1; i < pointsInOneLine.length; i++) {
@@ -53,13 +53,16 @@ public class FastCollinearPoints {
         }
     }
 
-    private boolean ThreePointsInOneLine(Point[] points, int start) {
+    private boolean FourPointsInOneLine(Point[] points, int start, Point
+            origin) {
 
         Point current = points[start];
         Point next = points[start + 1];
         Point nextnext = points[start + 2];
         if(current.slopeTo(next) == next.slopeTo(nextnext)) {
-            return true;
+            if(origin.slopeTo(current) == origin.slopeTo(next)) {
+                return true;
+            }
         }
         return false;
     }
