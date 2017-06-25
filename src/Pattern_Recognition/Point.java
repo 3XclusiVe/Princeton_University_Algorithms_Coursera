@@ -154,6 +154,8 @@ public class Point implements Comparable<Point> {
 
         checkSlopeTo();
 
+        System.out.println(new Point(1,1) == new Point(1,1));
+
     }
 
     private static void checkSlopeTo() {
@@ -175,7 +177,6 @@ public class Point implements Comparable<Point> {
         Point p0 = new Point(0, 0);
 
 
-
         testCase(p1.compareTo(p1) == 0);
         testCase(p2.compareTo(p2) == 0);
         testCase(p3.compareTo(p3) == 0);
@@ -191,13 +192,6 @@ public class Point implements Comparable<Point> {
             println("PASSED");
         } else {
             println("FAILED");
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                //for fast navigate to error in code
-                e.printStackTrace();
-            }
-
         }
     }
 

@@ -24,9 +24,10 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
 
-        precondition(points);
-        Arrays.sort(points);
-        int numberOfPoints = points.length;
+        Point[] point = points.clone();
+        precondition(point);
+        Arrays.sort(point);
+        int numberOfPoints = point.length;
         mSegments = new ArrayList<LineSegment>(numberOfPoints);
 
         for (int i = 0; i < numberOfPoints; i++) {
@@ -34,17 +35,17 @@ public class BruteCollinearPoints {
                 for (int k = j + 1; k < numberOfPoints; k++) {
 
                     boolean thisThreePointsCollinear =
-                            points[i].slopeTo(points[j]) == points[j].slopeTo(points[k]);
+                            point[i].slopeTo(point[j]) == point[j].slopeTo(point[k]);
 
                     if (thisThreePointsCollinear) {
                         for (int m = k + 1; m < numberOfPoints; m++) {
                             boolean allFourPointsCollinear =
-                                    points[j].slopeTo(points[k]) == points[k]
-                                            .slopeTo(points[m]);
+                                    point[j].slopeTo(point[k]) == point[k]
+                                            .slopeTo(point[m]);
 
                             if (allFourPointsCollinear) {
-                                mSegments.add(new LineSegment(points[i],
-                                        points[m]));
+                                mSegments.add(new LineSegment(point[i],
+                                        point[m]));
                                 mNumberOfSegments++;
                             }
                         }
@@ -64,7 +65,7 @@ public class BruteCollinearPoints {
                 throw new IllegalArgumentException();
             }
             for (int j = i + 1; j < points.length; j++) {
-                if (points[i] == points[j]) {
+                if (points[i].compareTo(points[j]) == 0) {
                     throw new IllegalArgumentException();
                 }
             }

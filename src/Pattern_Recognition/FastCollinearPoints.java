@@ -23,29 +23,33 @@ public class FastCollinearPoints {
      * @param points input points
      */
     public FastCollinearPoints(Point[] points) {
-        precondition(points);
 
-        int numberOfPoints = points.length;
-        mSegments = new ArrayList<LineSegment>(numberOfPoints);
+        Point[] mPoint = points.clone();
+        precondition(mPoint);
+
+        int numberOfPoints = mPoint.length;
+        mSegments = new ArrayList<>(numberOfPoints);
 
         for (Point point : points) {
             Point origin = point;
 
-            Arrays.sort(points, origin.slopeOrder());
+            Arrays.sort(mPoint, origin.slopeOrder());
             int start = 1;
             int end = start + 2;
 
-            while (end < points.length) {
-                if(FourPointsInOneLine(points, start, origin)) {
+            while (end < mPoint.length) {
+                if (FourPointsInOneLine(mPoint, start, origin)) {
                     Point[] pointsInOneLine = new Point[4];
                     pointsInOneLine[0] = origin;
-                    for(int i = 1; i < pointsInOneLine.length; i++) {
-                        pointsInOneLine[i] = points[start + i - 1];
+                    for (int i = 1; i < pointsInOneLine.length; i++) {
+                        pointsInOneLine[i] = mPoint[start + i - 1];
                     }
                     Arrays.sort(pointsInOneLine);
-                    mSegments.add(new LineSegment(pointsInOneLine[0],
-                            pointsInOneLine[3]));
-                    mNumberOfSegments++;
+                    if(pointsInOneLine[0].compareTo(origin) == 0) {
+                        mSegments.add(new LineSegment(pointsInOneLine[0],
+                                pointsInOneLine[3]));
+                        mNumberOfSegments++;
+                    }
                 }
                 start++;
                 end++;
@@ -59,8 +63,8 @@ public class FastCollinearPoints {
         Point current = points[start];
         Point next = points[start + 1];
         Point nextnext = points[start + 2];
-        if(current.slopeTo(next) == next.slopeTo(nextnext)) {
-            if(origin.slopeTo(current) == origin.slopeTo(next)) {
+        if (current.slopeTo(next) == next.slopeTo(nextnext)) {
+            if (origin.slopeTo(current) == origin.slopeTo(next)) {
                 return true;
             }
         }
@@ -98,7 +102,7 @@ public class FastCollinearPoints {
                 throw new IllegalArgumentException();
             }
             for (int j = i + 1; j < points.length; j++) {
-                if (points[i] == points[j]) {
+                if (points[i].compareTo(points[j]) == 0) {
                     throw new IllegalArgumentException();
                 }
             }
