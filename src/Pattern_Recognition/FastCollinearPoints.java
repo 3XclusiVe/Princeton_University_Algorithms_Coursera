@@ -24,8 +24,9 @@ public class FastCollinearPoints {
      */
     public FastCollinearPoints(Point[] points) {
 
+
+        precondition(points);
         Point[] mPoint = points.clone();
-        precondition(mPoint);
 
         int numberOfPoints = mPoint.length;
         mSegments = new ArrayList<>(numberOfPoints);

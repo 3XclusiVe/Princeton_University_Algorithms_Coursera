@@ -24,8 +24,8 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
 
+        precondition(points);
         Point[] point = points.clone();
-        precondition(point);
         Arrays.sort(point);
         int numberOfPoints = point.length;
         mSegments = new ArrayList<LineSegment>(numberOfPoints);
