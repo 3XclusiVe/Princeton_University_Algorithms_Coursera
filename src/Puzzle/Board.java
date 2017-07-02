@@ -202,13 +202,14 @@ public class Board {
             if (this.mBoardSize != that.mBoardSize) {
                 return false;
             }
-            for (int i = 0; i < mBoardSize; i++) {
+            for (int i = 0; i < mBoardSize * mBoardSize; i++) {
                 if (this.mBlock[i] != that.mBlock[i]) {
                     return false;
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
