@@ -3,15 +3,15 @@ package Puzzle;
 import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.jar.Pack200;
 
 /**
  * Created by user on 02.07.17.
  */
 public class Solver {
 
-    private List<Board> mSolutionPath = new ArrayList<>();
+    private List<Board> mSolutionPath = null;
     private Move mLastMove;
     private Board mGoalBoard;
     private boolean mSolvable = true;
@@ -38,6 +38,7 @@ public class Solver {
 
         while (!isGoal(currentBoard)) {
             mLastMove = possibleMoves.delMin();
+
             for (Board nextMoveBoard : mLastMove.getCurrentBoard().neighbors()) {
                 if (notRepeatedMove(nextMoveBoard)) {
                     possibleMoves.insert(new Move(nextMoveBoard, mLastMove));
@@ -57,13 +58,17 @@ public class Solver {
             }
         }
 
-        Move currentNode = mLastMove;
-        mSolutionPath.add(currentNode.getCurrentBoard());
-        while (currentNode.getPrev() != null) {
-            currentNode = currentNode.getPrev();
+        if(isSolvable()) {
+            mSolutionPath = new ArrayList<>(mLastMove.NumberOfMoves);
+            Move currentNode = mLastMove;
             mSolutionPath.add(currentNode.getCurrentBoard());
-        }
 
+            while (currentNode.getPrev() != null) {
+                currentNode = currentNode.getPrev();
+                mSolutionPath.add(currentNode.getCurrentBoard());
+            }
+        }
+        Collections.reverse(mSolutionPath);
     }
 
     private void unsolvable() {
@@ -154,7 +159,11 @@ public class Solver {
      * initial board; -1 if unsolvable
      */
     public int moves() {
-        return mLastMove.getNumberOfMoves();
+        if(isSolvable()) {
+            return mLastMove.getNumberOfMoves();
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -168,24 +177,26 @@ public class Solver {
     public static void main(String[] args) {
 
         int BoardArray[][] = new int[3][3];
-        BoardArray[0][0] = 6;
+        BoardArray[0][0] = 3;
         BoardArray[0][1] = 1;
-        BoardArray[0][2] = 3;
+        BoardArray[0][2] = 7;
 
-        BoardArray[1][0] = 4;
-        BoardArray[1][1] = 2;
-        BoardArray[1][2] = 5;
+        BoardArray[1][0] = 6;
+        BoardArray[1][1] = 5;
+        BoardArray[1][2] = 8;
 
-        BoardArray[2][0] = 7;
-        BoardArray[2][1] = 0;
-        BoardArray[2][2] = 8;
+        BoardArray[2][0] = 4;
+        BoardArray[2][1] = 2;
+        BoardArray[2][2] = 0;
 
         Board board = new Board(BoardArray);
 
         //System.out.println(board);
         //System.out.println(board.twin());
-        Solver solver = new Solver(board.twin());
+        Solver solver = new Solver(board);
         System.out.println(solver.isSolvable());
+        System.out.println(solver.moves());
+        //System.out.println(solver.solution());
 
         for (Board solutionBoard : solver.solution()) {
             System.out.println(solutionBoard);
