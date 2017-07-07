@@ -67,14 +67,16 @@ public class Board {
      * @return number of blocks out of place
      */
     public int hamming() {
-        int correctNumber = 1;
         int hammingFunction = 0;
+        int empty = 0;
 
-        for (int i = 0; i < mBlock.length - 1; i++) {
-            if (mBlock[i] != correctNumber) {
-                hammingFunction++;
+        for (int i = 0; i < mBlock.length; i++) {
+            int correctNumber = i + 1;
+            if (mBlock[i] != empty) {
+                if (mBlock[i] != correctNumber) {
+                    hammingFunction++;
+                }
             }
-            correctNumber++;
         }
 
         return hammingFunction;
@@ -106,16 +108,6 @@ public class Board {
 
                 manhattanFunction += distance;
 
-            } else {
-                int currentPosition = i;
-                int correctPosition = mBlock.length - 1;
-
-                int distance = Math.abs(linearIndexToColumnNumber(currentPosition)
-                        - linearIndexToColumnNumber(correctPosition)) +
-                        Math.abs(linearIndexToRowNumber(currentPosition) -
-                                linearIndexToRowNumber(correctPosition));
-
-                manhattanFunction += distance;
             }
 
         }
@@ -124,12 +116,11 @@ public class Board {
     }
 
     private int linearIndexToRowNumber(int linearIndex) {
-        return (int) Math.ceil(((double) linearIndex) / mBoardSize);
+        return linearIndex / mBoardSize;
     }
 
     private int linearIndexToColumnNumber(int linearIndex) {
-        int rowNumber = linearIndexToRowNumber(linearIndex);
-        return linearIndex - (rowNumber - 1) * mBoardSize;
+        return linearIndex % mBoardSize;
     }
 
     /**
@@ -155,15 +146,15 @@ public class Board {
      * @return newBoard
      */
     public Board twin() {
-        int positionToSwipe1 = StdRandom.uniform(mBlock.length);
+        int positionToSwipe1 = StdRandom.uniform(1, mBlock.length - 1);
         while (mBlock[positionToSwipe1] == 0) {
             positionToSwipe1 = StdRandom.uniform(mBlock.length);
         }
 
-        int positionToSwipe2 = StdRandom.uniform(mBlock.length);
+        int positionToSwipe2 = positionToSwipe1 + StdRandom.uniform(3) - 1;
         while ((mBlock[positionToSwipe2] == 0) || positionToSwipe2 ==
                 positionToSwipe1) {
-            positionToSwipe2 = StdRandom.uniform(mBlock.length);
+            positionToSwipe2 = positionToSwipe1 + StdRandom.uniform(3) - 1;
         }
 
         int[] twinedBoard = mBlock.clone();
@@ -217,10 +208,11 @@ public class Board {
      */
     public Iterable<Board> neighbors() {
 
-        ArrayList<Board> neighbors = new ArrayList<>(4);
+        int maxNumberOfNeighbors = 4;
+        ArrayList<Board> neighbors = new ArrayList<>(maxNumberOfNeighbors);
 
         if (mNeighbor.UP) {
-            int neighborUpIndex = mEmptyBlockIndex - mEmptyBlockIndex;
+            int neighborUpIndex = mEmptyBlockIndex - mBoardSize;
             int[] neighborUPBoard = swap(mBlock, mEmptyBlockIndex,
                     neighborUpIndex);
             int[][] upBoard = getBoard(neighborUPBoard);
