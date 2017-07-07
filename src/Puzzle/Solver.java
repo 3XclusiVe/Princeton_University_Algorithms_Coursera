@@ -23,6 +23,9 @@ public class Solver {
      * @param initial Board
      */
     public Solver(Board initial) {
+        if(initial == null) {
+            throw new java.lang.IllegalArgumentException();
+        }
 
         MinPQ<Move> possibleMoves = new MinPQ<>();
         Move startMove = new Move(initial);
@@ -67,15 +70,16 @@ public class Solver {
                 currentNode = currentNode.getPrev();
                 mSolutionPath.add(currentNode.getCurrentBoard());
             }
+            Collections.reverse(mSolutionPath);
         }
-        Collections.reverse(mSolutionPath);
+
     }
 
     private void unsolvable() {
         mSolvable = false;
     }
 
-    boolean isGoal(Board board) {
+    private boolean isGoal(Board board) {
         return mGoalBoard.equals(board);
     }
 
