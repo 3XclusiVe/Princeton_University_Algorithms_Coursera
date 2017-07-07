@@ -146,9 +146,10 @@ public class Board {
      * @return newBoard
      */
     public Board twin() {
-        int positionToSwipe1 = StdRandom.uniform(1, mBlock.length - 2);
+
+        int positionToSwipe1 = StdRandom.uniform(1, mBlock.length - 1);
         while (mBlock[positionToSwipe1] == 0) {
-            positionToSwipe1 = StdRandom.uniform(1, mBlock.length - 2);
+            positionToSwipe1 = StdRandom.uniform(1, mBlock.length - 1);
         }
 
         int positionToSwipe2 = positionToSwipe1 + StdRandom.uniform(3) - 1;
