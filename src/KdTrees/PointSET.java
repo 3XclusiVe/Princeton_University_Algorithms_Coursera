@@ -3,6 +3,7 @@ package KdTrees;
 import edu.princeton.cs.algs4.*;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.TreeSet;
 
 public class PointSET {
@@ -36,6 +37,7 @@ public class PointSET {
      * @param pointAdding point to add
      */
     public void insert(Point2D pointAdding) {
+        precondition(pointAdding);
         mPointSet.add(pointAdding);
     }
 
@@ -44,6 +46,7 @@ public class PointSET {
      * @return does the set contain point p?
      */
     public boolean contains(Point2D pointChecking) {
+        precondition(pointChecking);
         return mPointSet.contains(pointChecking);
     }
 
@@ -68,6 +71,7 @@ public class PointSET {
      */
     public Iterable<Point2D> range(RectHV rectangle) {
 
+        precondition(rectangle);
         Stack<Point2D> pointsInsideRectangle = new Stack<>();
 
         for (Point2D point : mPointSet) {
@@ -87,6 +91,7 @@ public class PointSET {
      */
     public Point2D nearest(Point2D inputPoint) {
 
+        precondition(inputPoint);
         if (mPointSet.isEmpty()) return null;
 
         Point2D nearestpoint = mPointSet.first();
@@ -102,6 +107,10 @@ public class PointSET {
         }
 
         return nearestpoint;
+    }
+
+    private void precondition(Object object) {
+        if(object == null) throw new IllegalArgumentException();
     }
 
     /**
