@@ -3,7 +3,6 @@ package KdTrees;
 import edu.princeton.cs.algs4.*;
 
 import java.awt.*;
-import java.util.Objects;
 import java.util.TreeSet;
 
 public class PointSET {
@@ -110,7 +109,7 @@ public class PointSET {
     }
 
     private void precondition(Object object) {
-        if(object == null) throw new IllegalArgumentException();
+        if (object == null) throw new IllegalArgumentException();
     }
 
     /**
@@ -126,7 +125,7 @@ public class PointSET {
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();
-            Point2D point = new Point2D(x,y);
+            Point2D point = new Point2D(x, y);
             pointSet.insert(point);
             //StdOut.println("point:" + point);
             //StdOut.println("nearest: " + pointSet.nearest(point));
@@ -134,9 +133,9 @@ public class PointSET {
         RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
         StdDraw.setPenColor(Color.red);
         recangle.draw();
-        Iterable<Point2D> pointsInsideRectangle  = pointSet.range(recangle);
+        Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
         PointSET pointsInsideRectangleSet = new PointSET();
-        for(Point2D point : pointsInsideRectangle) {
+        for (Point2D point : pointsInsideRectangle) {
             pointsInsideRectangleSet.insert(point);
         }
         pointsInsideRectangleSet.draw();
