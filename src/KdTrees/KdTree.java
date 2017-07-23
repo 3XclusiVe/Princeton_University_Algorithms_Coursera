@@ -1,8 +1,6 @@
 package KdTrees;
 
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.*;
 
 import java.awt.*;
 
@@ -14,7 +12,9 @@ public class KdTree {
 
     private int mSize;
     private KdTreeNode mRoot;
-
+    private Stack<Point2D> pointsInsideRectangle = new Stack<Point2D>();
+    private Point2D nearestPoint;
+    private double nearestPointSquaredDistance;
 
     private static class KdTreeNode implements Comparable<KdTreeNode> {
         private Point2D point;
@@ -239,8 +239,24 @@ public class KdTree {
 
         precondition(rectangle);
 
-        return null;
+        pointsInsideRectangle = new Stack<Point2D>();
 
+        range(mRoot, rectangle);
+
+        return pointsInsideRectangle;
+
+    }
+
+    private void range(KdTreeNode currentNode, RectHV rectangle) {
+        if(currentNode == null) return;
+
+        if(currentNode.nodeArea.intersects(rectangle)) {
+            if(rectangle.contains(currentNode.point)) {
+                pointsInsideRectangle.push(currentNode.point);
+            }
+            range(currentNode.left, rectangle);
+            range(currentNode.right, rectangle);
+        }
     }
 
     /**
@@ -252,8 +268,28 @@ public class KdTree {
     public Point2D nearest(Point2D inputPoint) {
 
         precondition(inputPoint);
+        nearestPoint = mRoot.point;
+        nearestPointSquaredDistance = mRoot.point.distanceSquaredTo(inputPoint);
+        nearest(mRoot, inputPoint);
 
-        return null;
+        return nearestPoint;
+    }
+
+    private void nearest(KdTreeNode currentNode, Point2D inputPoint) {
+
+        if(currentNode == null) return;
+
+        if(currentNode.nodeArea.contains(inputPoint)) {
+            if(currentNode.point.distanceSquaredTo(inputPoint) <
+                    nearestPointSquaredDistance) {
+                nearestPoint = currentNode.point;
+                nearestPointSquaredDistance = inputPoint.distanceSquaredTo(nearestPoint);
+            }
+
+            nearest(currentNode.left, inputPoint);
+            nearest(currentNode.right, inputPoint);
+        }
+
     }
 
     private void precondition(Object object) {
@@ -263,22 +299,25 @@ public class KdTree {
     public static void main(String[] args) {
 
         KdTree pointSet = new KdTree();
-        pointSet.insert(new Point2D(0.7, 0.2));
-        pointSet.insert(new Point2D(0.5, 0.4));
-        pointSet.insert(new Point2D(0.2, 0.3));
-        pointSet.insert(new Point2D(0.4, 0.7));
-        pointSet.insert(new Point2D(0.9, 0.6));
-        pointSet.insert(new Point2D(0.1, 0.6));
-        pointSet.insert(new Point2D(0.1, 0.5));
-
-        for (int i = 0; i < 100; i++) {
-            pointSet.insert(new Point2D(i / 100.0, i / 100.0));
+        String fileName = args[0];
+        In in = new In(fileName);
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D point = new Point2D(x, y);
+            pointSet.insert(point);
+            //StdOut.println("point:" + point);
+            //StdOut.println("nearest: " + pointSet.nearest(point));
         }
-
-        //переписать контенз подумать как реализовать
-        //System.out.println(pointSet.contains(new Point2D(0.6, 0.6)));**/
-
-        pointSet.draw();
+        RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
+        StdDraw.setPenColor(Color.red);
+        recangle.draw();
+        Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
+        PointSET pointsInsideRectangleSet = new PointSET();
+        for (Point2D point : pointsInsideRectangle) {
+            pointsInsideRectangleSet.insert(point);
+        }
+        pointsInsideRectangleSet.draw();
 
     }
 
