@@ -4,6 +4,7 @@ import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.awt.*;
 
 
 /**
@@ -23,6 +24,9 @@ public class KdTree {
 
         @Override
         public int compareTo(KdTreeNode that) {
+            if (this.point.equals(that.point)) {
+                return 0;
+            }
             if (this.isVertical) {
                 if (this.point.x() >= that.point.x()) return 1;
                 if (this.point.x() < that.point.x()) return -1;
@@ -86,53 +90,74 @@ public class KdTree {
         KdTreeNode upperToCurrentNode = null;
         KdTreeNode tempNodeToAdd = createTempNode(pointAdding);
 
-        while(currentNode != null) {
+        while (currentNode != null) {
             if (currentNode.compareTo(tempNodeToAdd) >= 1) {
                 upperToCurrentNode = currentNode;
                 currentNode = currentNode.left;
-                if(currentNode == null) {
+                if (currentNode == null) {
                     addNodeToLeft(upperToCurrentNode, pointAdding);
                 }
             } else if (currentNode.compareTo(tempNodeToAdd) <= -1) {
                 upperToCurrentNode = currentNode;
                 currentNode = currentNode.right;
-                if(currentNode == null) {
+                if (currentNode == null) {
                     addNodeToRight(upperToCurrentNode, pointAdding);
                 }
 
+            } else {
+                return;
             }
         }
     }
 
     private void addNodeToRight(KdTreeNode upperToCurrentNode, Point2D pointAdding) {
-        RectHV nodeArea = upperToCurrentNode.nodeArea;
+        RectHV nodeArea = splitUpperNodeAreaAndChooseRightPart
+                (upperToCurrentNode);
         boolean orientation = !upperToCurrentNode.isVertical;
         upperToCurrentNode.right = new KdTreeNode(pointAdding, nodeArea,
                 orientation);
         mSize++;
     }
 
+    private RectHV splitUpperNodeAreaAndChooseRightPart(KdTreeNode
+                                                                upperToCurrentNode) {
+        if (upperToCurrentNode.isVertical) {
+            return new RectHV(upperToCurrentNode.point.x(), upperToCurrentNode
+                    .nodeArea.ymin(),
+                    upperToCurrentNode.nodeArea.xmax(), upperToCurrentNode
+                    .nodeArea.ymax());
+        } else {
+            return new RectHV(upperToCurrentNode.nodeArea.xmin(),
+                    upperToCurrentNode.point
+                            .y(), upperToCurrentNode.nodeArea.xmax(),
+                    upperToCurrentNode.nodeArea.ymax());
+        }
+    }
+
     private void addNodeToLeft(KdTreeNode upperToCurrentNode, Point2D
             pointAdding) {
-        RectHV nodeArea = upperToCurrentNode.nodeArea;
+        RectHV nodeArea = splitUpperNodeAreaAndChooseLeftPart
+                (upperToCurrentNode);
         boolean orientation = !upperToCurrentNode.isVertical;
         upperToCurrentNode.left = new KdTreeNode(pointAdding, nodeArea,
                 orientation);
         mSize++;
     }
 
-    /**
-    private KdTreeNode put(KdTreeNode root, KdTreeNode tempNodeToAdd) {
-        if(root == null) {
-            return new KdTreeNode(tempNodeToAdd.point, )
+    private RectHV splitUpperNodeAreaAndChooseLeftPart(KdTreeNode upperToCurrentNode) {
+        if (upperToCurrentNode.isVertical) {
+            return new RectHV(upperToCurrentNode.nodeArea.xmin(), upperToCurrentNode
+                    .nodeArea.ymin(),
+                    upperToCurrentNode.point.x(), upperToCurrentNode
+                    .nodeArea.ymax());
+        } else {
+            return new RectHV(upperToCurrentNode.nodeArea.xmin(),
+                    upperToCurrentNode.nodeArea.ymin(),
+                    upperToCurrentNode.nodeArea.xmax(),
+                    upperToCurrentNode.point.y());
         }
     }
-     **/
 
-    private RectHV splitUpperNodeArea(KdTreeNode upperToCurrentNode) {
-        RectHV rootArea = upperToCurrentNode.nodeArea;
-        return rootArea;
-    }
 
     private KdTreeNode createTempNode(Point2D pointAdding) {
         RectHV fullAreaRectangle = new RectHV(0, 0, 1, 1);
@@ -162,19 +187,11 @@ public class KdTree {
         KdTreeNode tempNode = createTempNode(pointChecking);
 
         while (currentNode != null) {
-            if(currentNode.compareTo(tempNode) >= 1) {
-                if(currentNode.left == null) {
-                    if(currentNode.point.equals(tempNode.point)) {
-                        return true;
-                    }
-                }
+            if (currentNode.compareTo(tempNode) == 0) {
+                return true;
+            } else if (currentNode.compareTo(tempNode) >= 1) {
                 currentNode = currentNode.left;
             } else if (currentNode.compareTo(tempNode) <= -1) {
-                if(currentNode.right == null) {
-                    if(currentNode.point.equals(tempNode.point)) {
-                        return true;
-                    }
-                }
                 currentNode = currentNode.right;
             }
         }
@@ -187,10 +204,29 @@ public class KdTree {
      */
     public void draw() {
 
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
+        draw(mRoot);
 
-        //mPointsTree.draw();
+    }
+
+    private void draw(KdTreeNode currentRoot) {
+        if (currentRoot == null) return;
+
+        StdDraw.setPenColor(Color.black);
+        StdDraw.setPenRadius(0.05);
+        currentRoot.point.draw();
+        if (currentRoot.isVertical) {
+            StdDraw.setPenColor(Color.red);
+            StdDraw.setPenRadius(0.01);
+            StdDraw.line(currentRoot.point.x(), currentRoot.nodeArea.ymin(),
+                    currentRoot.point.x(), currentRoot.nodeArea.ymax());
+        } else {
+            StdDraw.setPenColor(Color.blue);
+            StdDraw.setPenRadius(0.01);
+            StdDraw.line(currentRoot.nodeArea.xmin(), currentRoot.point.y(),
+                    currentRoot.nodeArea.xmax(), currentRoot.point.y());
+        }
+        draw(currentRoot.left);
+        draw(currentRoot.right);
     }
 
     /**
@@ -227,14 +263,22 @@ public class KdTree {
     public static void main(String[] args) {
 
         KdTree pointSet = new KdTree();
-        pointSet.insert(new Point2D(0.7,0.2));
-        pointSet.insert(new Point2D(0.5,0.4));
-        pointSet.insert(new Point2D(0.2,0.3));
-        pointSet.insert(new Point2D(0.4,0.7));
-        pointSet.insert(new Point2D(0.9,0.6));
+        pointSet.insert(new Point2D(0.7, 0.2));
+        pointSet.insert(new Point2D(0.5, 0.4));
+        pointSet.insert(new Point2D(0.2, 0.3));
+        pointSet.insert(new Point2D(0.4, 0.7));
+        pointSet.insert(new Point2D(0.9, 0.6));
+        pointSet.insert(new Point2D(0.1, 0.6));
+        pointSet.insert(new Point2D(0.1, 0.5));
+
+        for (int i = 0; i < 100; i++) {
+            pointSet.insert(new Point2D(i / 100.0, i / 100.0));
+        }
 
         //переписать контенз подумать как реализовать
-        System.out.println(pointSet.contains(new Point2D(0.5,0.4)));
+        //System.out.println(pointSet.contains(new Point2D(0.6, 0.6)));**/
+
+        pointSet.draw();
 
     }
 
