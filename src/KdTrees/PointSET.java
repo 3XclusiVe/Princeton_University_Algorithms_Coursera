@@ -2,7 +2,6 @@ package KdTrees;
 
 import edu.princeton.cs.algs4.*;
 
-import java.awt.*;
 import java.util.TreeSet;
 
 public class PointSET {
@@ -131,7 +130,7 @@ public class PointSET {
             //StdOut.println("nearest: " + pointSet.nearest(point));
         }
         RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
-        StdDraw.setPenColor(Color.red);
+        StdDraw.setPenColor(StdDraw.RED);
         recangle.draw();
         Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
         PointSET pointsInsideRectangleSet = new PointSET();

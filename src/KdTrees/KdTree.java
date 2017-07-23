@@ -2,7 +2,6 @@ package KdTrees;
 
 import edu.princeton.cs.algs4.*;
 
-import java.awt.*;
 
 
 /**
@@ -211,16 +210,16 @@ public class KdTree {
     private void draw(KdTreeNode currentRoot) {
         if (currentRoot == null) return;
 
-        StdDraw.setPenColor(Color.black);
+        StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.05);
         currentRoot.point.draw();
         if (currentRoot.isVertical) {
-            StdDraw.setPenColor(Color.red);
+            StdDraw.setPenColor(StdDraw.RED);
             StdDraw.setPenRadius(0.01);
             StdDraw.line(currentRoot.point.x(), currentRoot.nodeArea.ymin(),
                     currentRoot.point.x(), currentRoot.nodeArea.ymax());
         } else {
-            StdDraw.setPenColor(Color.blue);
+            StdDraw.setPenColor(StdDraw.BLUE);
             StdDraw.setPenRadius(0.01);
             StdDraw.line(currentRoot.nodeArea.xmin(), currentRoot.point.y(),
                     currentRoot.nodeArea.xmax(), currentRoot.point.y());
@@ -310,7 +309,7 @@ public class KdTree {
             //StdOut.println("nearest: " + pointSet.nearest(point));
         }
         RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
-        StdDraw.setPenColor(Color.red);
+        StdDraw.setPenColor(StdDraw.RED);
         recangle.draw();
         Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
         PointSET pointsInsideRectangleSet = new PointSET();
