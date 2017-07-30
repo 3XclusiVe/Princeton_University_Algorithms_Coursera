@@ -17,22 +17,126 @@ import static edu.princeton.cs.algs4.StdOut.println;
  */
 public class Deque<Item> implements Iterable<Item> {
 
-    private class Node {
-        Item item;
-        Node next;
-        Node previous;
-    }
-
     private int mSize;
-
     private Node mHead;
     private Node mTale;
-
     /**
      * construct an empty deque
      */
     public Deque() {
         mSize = 0;
+    }
+
+    /**
+     * Unit-test like function:
+     * bad style but acceptable in this case
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        Deque<String> deque = new Deque<String>();
+
+        try {
+            deque.addFirst(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
+
+        try {
+            deque.addLast(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
+
+        try {
+            deque.removeLast();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        try {
+            deque.removeFirst();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        try {
+            deque.iterator().remove();
+        } catch (UnsupportedOperationException e) {
+            testCase(true);
+        }
+
+        testCase(deque.isEmpty() == true);
+        testCase(deque.size() == 0);
+
+        deque.addFirst("A");
+        deque.addFirst("B");
+        deque.addFirst("C");
+        deque.addLast("X");
+        deque.addLast("Y");
+        deque.addLast("Z");
+
+        String allElements = new String();
+        for (String element : deque) {
+            allElements += element;
+        }
+
+        testCase(allElements.equals("CBAXYZ"));
+        testCase(deque.size() == 6);
+        testCase(deque.isEmpty() == false);
+
+        deque = new Deque<String>();
+        deque.addFirst("A");
+        deque.addFirst("B");
+        deque.addFirst("C");
+
+        testCase(deque.removeLast().equals("A"));
+        testCase(deque.removeFirst().equals("C"));
+        testCase(deque.isEmpty() == false);
+        testCase(deque.size() == 1);
+
+        allElements = new String();
+        for (String element : deque) {
+            allElements += element;
+        }
+        testCase(allElements.equals("B"));
+
+        testCase(deque.removeLast().equals("B"));
+        testCase(deque.isEmpty());
+        testCase(deque.size() == 0);
+
+        deque.addFirst("AAv");
+        deque.addFirst("122");
+        deque.addLast("A213");
+        deque.addLast("11fg>");
+
+        allElements = new String();
+        for (String element : deque) {
+            allElements += element;
+        }
+
+        testCase(allElements.equals("122AAvA21311fg>"));
+
+
+        Deque<Integer> deque1 = new Deque<Integer>();
+
+        int n = 1000000;
+        for (int i = 0; i < n; i++) {
+            deque1.addFirst(i);
+        }
+        for (int i = 0; i < n; i++) {
+            testCase(deque1.removeLast() == i);
+        }
+
+    }
+
+    private static void testCase(boolean testCase) {
+        if (testCase == true) {
+            println("PASSED");
+        } else {
+            println("FAILED");
+        }
     }
 
     /**
@@ -168,12 +272,17 @@ public class Deque<Item> implements Iterable<Item> {
         return new DequeIterator();
     }
 
-
     private void checkNullPointerParameter(Item newItem) {
         if (newItem == null) {
             throw new NullPointerException("cant add null pointer " +
                     "element");
         }
+    }
+
+    private class Node {
+        Item item;
+        Node next;
+        Node previous;
     }
 
     private class DequeIterator implements Iterator<Item> {
@@ -207,118 +316,6 @@ public class Deque<Item> implements Iterable<Item> {
         @Override
         public void forEachRemaining(Consumer<? super Item> action) {
             throw new java.lang.UnsupportedOperationException();
-        }
-    }
-
-    /**
-     * Unit-test like function:
-     * bad style but acceptable in this case
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        Deque<String> deque = new Deque<String>();
-
-        try {
-            deque.addFirst(null);
-        } catch (NullPointerException e) {
-            testCase(true);
-        }
-
-        try {
-            deque.addLast(null);
-        } catch (NullPointerException e) {
-            testCase(true);
-        }
-
-        try {
-            deque.removeLast();
-        } catch (NoSuchElementException e) {
-            testCase(true);
-        }
-
-        try {
-            deque.removeFirst();
-        } catch (NoSuchElementException e) {
-            testCase(true);
-        }
-
-        try {
-            deque.iterator().remove();
-        } catch (UnsupportedOperationException e) {
-            testCase(true);
-        }
-
-        testCase(deque.isEmpty() == true);
-        testCase(deque.size() == 0);
-
-        deque.addFirst("A");
-        deque.addFirst("B");
-        deque.addFirst("C");
-        deque.addLast("X");
-        deque.addLast("Y");
-        deque.addLast("Z");
-
-        String allElements = new String();
-        for (String element : deque) {
-            allElements += element;
-        }
-
-        testCase(allElements.equals("CBAXYZ"));
-        testCase(deque.size() == 6);
-        testCase(deque.isEmpty() == false);
-
-        deque = new Deque<String>();
-        deque.addFirst("A");
-        deque.addFirst("B");
-        deque.addFirst("C");
-
-        testCase(deque.removeLast().equals("A"));
-        testCase(deque.removeFirst().equals("C"));
-        testCase(deque.isEmpty() == false);
-        testCase(deque.size() == 1);
-
-        allElements = new String();
-        for (String element : deque) {
-            allElements += element;
-        }
-        testCase(allElements.equals("B"));
-
-        testCase(deque.removeLast().equals("B"));
-        testCase(deque.isEmpty());
-        testCase(deque.size() == 0);
-
-        deque.addFirst("AAv");
-        deque.addFirst("122");
-        deque.addLast("A213");
-        deque.addLast("11fg>");
-
-        allElements = new String();
-        for (String element : deque) {
-            allElements += element;
-        }
-
-        testCase(allElements.equals("122AAvA21311fg>"));
-
-
-        Deque<Integer> deque1 = new Deque<Integer>();
-
-        int n = 1000000;
-        for (int i = 0; i < n; i++) {
-            deque1.addFirst(i);
-        }
-        for (int i = 0; i < n; i++) {
-            testCase(deque1.removeLast() == i);
-        }
-
-    }
-
-    private static void testCase(boolean testCase) {
-        if (testCase == true) {
-            println("PASSED");
-        } else {
-            println("FAILED");
         }
     }
 }

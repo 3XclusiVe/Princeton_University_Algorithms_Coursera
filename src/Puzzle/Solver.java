@@ -23,7 +23,7 @@ public class Solver {
      * @param initial Board
      */
     public Solver(Board initial) {
-        if(initial == null) {
+        if (initial == null) {
             throw new java.lang.IllegalArgumentException();
         }
 
@@ -55,13 +55,13 @@ public class Solver {
                     possibleMovesTwin.insert(new Move(nextMoveBoard, twinedLastMove));
                 }
             }
-            if(isGoal(twinedLastMove.getCurrentBoard())) {
+            if (isGoal(twinedLastMove.getCurrentBoard())) {
                 unsolvable();
                 break;
             }
         }
 
-        if(isSolvable()) {
+        if (isSolvable()) {
             mSolutionPath = new ArrayList<>(mLastMove.NumberOfMoves);
             Move currentNode = mLastMove;
             mSolutionPath.add(currentNode.getCurrentBoard());
@@ -71,6 +71,36 @@ public class Solver {
                 mSolutionPath.add(currentNode.getCurrentBoard());
             }
             Collections.reverse(mSolutionPath);
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+        int BoardArray[][] = new int[3][3];
+        BoardArray[0][0] = 3;
+        BoardArray[0][1] = 1;
+        BoardArray[0][2] = 7;
+
+        BoardArray[1][0] = 6;
+        BoardArray[1][1] = 5;
+        BoardArray[1][2] = 8;
+
+        BoardArray[2][0] = 4;
+        BoardArray[2][1] = 2;
+        BoardArray[2][2] = 0;
+
+        Board board = new Board(BoardArray);
+
+        //System.out.println(board);
+        //System.out.println(board.twin());
+        Solver solver = new Solver(board);
+        System.out.println(solver.isSolvable());
+        System.out.println(solver.moves());
+        //System.out.println(solver.solution());
+
+        for (Board solutionBoard : solver.solution()) {
+            System.out.println(solutionBoard);
         }
 
     }
@@ -107,6 +137,33 @@ public class Solver {
         }
         goalBoardArray[size - 1][size - 1] = 0;
         return new Board(goalBoardArray);
+    }
+
+    /**
+     * @return is the initial board solvable?
+     */
+    public boolean isSolvable() {
+        return mSolvable;
+    }
+
+    /**
+     * @return min number of moves to solve
+     * initial board; -1 if unsolvable
+     */
+    public int moves() {
+        if (isSolvable()) {
+            return mLastMove.getNumberOfMoves();
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * @return sequence of boards in a shortest solution;
+     * null if unsolvable
+     */
+    public Iterable<Board> solution() {
+        return mSolutionPath;
     }
 
     private class Move implements Comparable<Move> {
@@ -149,62 +206,5 @@ public class Solver {
 
             return thisPriority - otherPriority;
         }
-    }
-
-    /**
-     * @return is the initial board solvable?
-     */
-    public boolean isSolvable() {
-        return mSolvable;
-    }
-
-    /**
-     * @return min number of moves to solve
-     * initial board; -1 if unsolvable
-     */
-    public int moves() {
-        if(isSolvable()) {
-            return mLastMove.getNumberOfMoves();
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * @return sequence of boards in a shortest solution;
-     * null if unsolvable
-     */
-    public Iterable<Board> solution() {
-        return mSolutionPath;
-    }
-
-    public static void main(String[] args) {
-
-        int BoardArray[][] = new int[3][3];
-        BoardArray[0][0] = 3;
-        BoardArray[0][1] = 1;
-        BoardArray[0][2] = 7;
-
-        BoardArray[1][0] = 6;
-        BoardArray[1][1] = 5;
-        BoardArray[1][2] = 8;
-
-        BoardArray[2][0] = 4;
-        BoardArray[2][1] = 2;
-        BoardArray[2][2] = 0;
-
-        Board board = new Board(BoardArray);
-
-        //System.out.println(board);
-        //System.out.println(board.twin());
-        Solver solver = new Solver(board);
-        System.out.println(solver.isSolvable());
-        System.out.println(solver.moves());
-        //System.out.println(solver.solution());
-
-        for (Board solutionBoard : solver.solution()) {
-            System.out.println(solutionBoard);
-        }
-
     }
 }

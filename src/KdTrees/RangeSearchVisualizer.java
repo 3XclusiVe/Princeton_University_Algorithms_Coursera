@@ -72,7 +72,7 @@ public class RangeSearchVisualizer {
 
 
             RectHV rect = new RectHV(Math.min(x0, x1), Math.min(y0, y1),
-                                     Math.max(x0, x1), Math.max(y0, y1));
+                    Math.max(x0, x1), Math.max(y0, y1));
             // draw the points
             StdDraw.clear();
             StdDraw.setPenColor(StdDraw.BLACK);

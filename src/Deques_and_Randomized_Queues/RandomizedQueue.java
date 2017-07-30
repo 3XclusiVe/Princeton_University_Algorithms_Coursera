@@ -32,6 +32,74 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     /**
+     * Unit-test like function:
+     * bad style but acceptable in this case
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
+
+        try {
+            queue.enqueue(null);
+        } catch (NullPointerException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.dequeue();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.sample();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+
+        try {
+            queue.iterator().remove();
+        } catch (UnsupportedOperationException e) {
+            testCase(true);
+        }
+
+        try {
+            queue.iterator().next();
+        } catch (NoSuchElementException e) {
+            testCase(true);
+        }
+
+        testCase(queue.size() == 0);
+        testCase(queue.size() == 0);
+        testCase(queue.isEmpty());
+        testCase(queue.isEmpty());
+        queue.enqueue(39);
+        testCase(queue.dequeue() == 39);
+
+
+        for (int i = 0; i < 10; i++) {
+            queue.enqueue(i);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            println(queue.dequeue());
+        }
+
+
+    }
+
+    private static void testCase(boolean testCase) {
+        if (testCase == true) {
+            println("PASSED");
+        } else {
+            println("FAILED");
+        }
+    }
+
+    /**
      * @return is the queue empty?
      * performance requirements: constant amortized time
      */
@@ -125,7 +193,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return mQueueElement[StdRandom.uniform(mSize)];
     }
 
-
     /**
      * return an independent iterator over items in random order
      *
@@ -170,75 +237,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         @Override
         public void forEachRemaining(Consumer<? super Item> action) {
             throw new java.lang.UnsupportedOperationException();
-        }
-    }
-
-
-    /**
-     * Unit-test like function:
-     * bad style but acceptable in this case
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
-
-        try {
-            queue.enqueue(null);
-        } catch (NullPointerException e) {
-            testCase(true);
-        }
-
-        try {
-            queue.dequeue();
-        } catch (NoSuchElementException e) {
-            testCase(true);
-        }
-
-        try {
-            queue.sample();
-        } catch (NoSuchElementException e) {
-            testCase(true);
-        }
-
-
-        try {
-            queue.iterator().remove();
-        } catch (UnsupportedOperationException e) {
-            testCase(true);
-        }
-
-        try {
-            queue.iterator().next();
-        } catch (NoSuchElementException e) {
-            testCase(true);
-        }
-
-        testCase(queue.size() == 0);
-        testCase(queue.size() == 0);
-        testCase(queue.isEmpty());
-        testCase(queue.isEmpty());
-        queue.enqueue(39);
-        testCase(queue.dequeue() == 39);
-
-
-        for (int i = 0; i < 10; i++) {
-            queue.enqueue(i);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            println(queue.dequeue());
-        }
-
-
-    }
-
-    private static void testCase(boolean testCase) {
-        if (testCase == true) {
-            println("PASSED");
-        } else {
-            println("FAILED");
         }
     }
 }

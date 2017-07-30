@@ -45,6 +45,21 @@ public class PercolationStats {
         }
     }
 
+    public static void main(String[] args) {
+
+        int sizeOfGrid = Integer.parseInt(args[0]);
+        int numberOfExperements = Integer.parseInt(args[1]);
+        PercolationStats percolationStats = new PercolationStats(sizeOfGrid, numberOfExperements);
+
+
+        String confidence = percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi();
+        StdOut.println("mean                    = " + percolationStats.mean());
+        StdOut.println("stddev                  = " + percolationStats.stddev());
+        StdOut.println("95% confidence interval = " + confidence);
+    }
+
+    // sample mean of percolation threshold
+
     /**
      * calculates mean of percolation threshold
      *
@@ -53,8 +68,6 @@ public class PercolationStats {
     public double mean() {
         return StdStats.mean(mPercolationThreshold);
     }
-
-    // sample mean of percolation threshold
 
     /**
      * calculates standard deviation of percolation threshold
@@ -81,18 +94,5 @@ public class PercolationStats {
      */
     public double confidenceHi() {
         return mean() + ((1.96 * stddev()) / Math.sqrt(mExperementsNumber));
-    }
-
-    public static void main(String[] args) {
-
-        int sizeOfGrid = Integer.parseInt(args[0]);
-        int numberOfExperements = Integer.parseInt(args[1]);
-        PercolationStats percolationStats = new PercolationStats(sizeOfGrid, numberOfExperements);
-
-
-        String confidence = percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi();
-        StdOut.println("mean                    = " + percolationStats.mean());
-        StdOut.println("stddev                  = " + percolationStats.stddev());
-        StdOut.println("95% confidence interval = " + confidence);
     }
 }

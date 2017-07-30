@@ -1,7 +1,6 @@
 package Percolation;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import java.lang.Math;
 
 /**
  * This class creates a system that
@@ -36,6 +35,78 @@ public class Percolation {
         mGridElementOpened = new boolean[n][n];
     }
 
+    /**
+     * Unittest-like function
+     */
+    public static void main(String[] args) {
+
+        Percolation p = new Percolation(1);
+
+        System.out.println(p.percolates() == false);
+
+        p.open(1, 1);
+
+        System.out.println(p.percolates() == true);
+
+        try {
+            p.open(1, 2);
+        } catch (Exception e) {
+            System.out.println(true);
+        }
+
+        p = new Percolation(4);
+
+        p.open(1, 1);
+        p.open(1, 1);
+        p.open(1, 1);
+
+        System.out.println(p.isOpen(1, 1) == true);
+        System.out.println(p.isFull(1, 1) == true);
+
+        p.open(2, 1);
+        p.open(2, 2);
+
+        System.out.println(p.percolates() == false);
+        System.out.println(p.numberOfOpenSites() == 3);
+
+        p.open(3, 1);
+
+        p.open(4, 1);
+
+        System.out.println(p.percolates() == true);
+
+
+        p = new Percolation(4);
+
+        p.open(1, 1);
+        p.open(1, 1);
+        p.open(1, 1);
+
+        System.out.println(p.isOpen(1, 3) == false);
+        System.out.println(p.isFull(1, 2) == false);
+
+        p.open(2, 1);
+        p.open(2, 2);
+        System.out.println(p.isFull(2, 2) == true);
+        p.open(2, 2);
+        p.open(2, 3);
+
+        System.out.println(p.percolates() == false);
+        System.out.println(p.numberOfOpenSites() == 4);
+
+        p.open(3, 1);
+        p.open(3, 3);
+
+        System.out.println(p.percolates() == false);
+
+        p.open(3, 4);
+
+        System.out.println(p.percolates() == false);
+
+        p.open(4, 4);
+
+        System.out.println(p.percolates() == true);
+    }
 
     /**
      * open site (row, col) if it is not open already
@@ -73,7 +144,6 @@ public class Percolation {
             throw new IndexOutOfBoundsException(e.getMessage());
         }
     }
-
 
     /**
      * is site (row, col) full?
@@ -180,78 +250,5 @@ public class Percolation {
 
     private boolean inLastLine(int linearIndex) {
         return linearIndex > mSizeOfLineInGrid * (mSizeOfLineInGrid - 1);
-    }
-
-    /**
-     * Unittest-like function
-     */
-    public static void main(String[] args) {
-
-        Percolation p = new Percolation(1);
-
-        System.out.println(p.percolates() == false);
-
-        p.open(1, 1);
-
-        System.out.println(p.percolates() == true);
-
-        try {
-            p.open(1, 2);
-        } catch (Exception e) {
-            System.out.println(true);
-        }
-
-        p = new Percolation(4);
-
-        p.open(1, 1);
-        p.open(1, 1);
-        p.open(1, 1);
-
-        System.out.println(p.isOpen(1, 1) == true);
-        System.out.println(p.isFull(1, 1) == true);
-
-        p.open(2, 1);
-        p.open(2, 2);
-
-        System.out.println(p.percolates() == false);
-        System.out.println(p.numberOfOpenSites() == 3);
-
-        p.open(3, 1);
-
-        p.open(4, 1);
-
-        System.out.println(p.percolates() == true);
-
-
-        p = new Percolation(4);
-
-        p.open(1, 1);
-        p.open(1, 1);
-        p.open(1, 1);
-
-        System.out.println(p.isOpen(1, 3) == false);
-        System.out.println(p.isFull(1, 2) == false);
-
-        p.open(2, 1);
-        p.open(2, 2);
-        System.out.println(p.isFull(2, 2) == true);
-        p.open(2, 2);
-        p.open(2, 3);
-
-        System.out.println(p.percolates() == false);
-        System.out.println(p.numberOfOpenSites() == 4);
-
-        p.open(3, 1);
-        p.open(3, 3);
-
-        System.out.println(p.percolates() == false);
-
-        p.open(3, 4);
-
-        System.out.println(p.percolates() == false);
-
-        p.open(4, 4);
-
-        System.out.println(p.percolates() == true);
     }
 }

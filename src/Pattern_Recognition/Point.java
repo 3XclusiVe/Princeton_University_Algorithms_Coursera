@@ -33,6 +33,56 @@ public class Point implements Comparable<Point> {
     }
 
     /**
+     * Unit tests the Point data type.
+     */
+    public static void main(String[] args) {
+
+        checkCompareTo();
+
+        checkSlopeTo();
+
+        System.out.println(new Point(1, 1) == new Point(1, 1));
+
+    }
+
+    private static void checkSlopeTo() {
+        Point p1 = new Point(1, 1);
+        Point p2 = new Point(1, 0);
+        Point p3 = new Point(0, 1);
+        Point p0 = new Point(0, 0);
+
+        testCase(p1.slopeTo(p1) == Double.NEGATIVE_INFINITY);
+        testCase(p1.slopeTo(p2) == Double.POSITIVE_INFINITY);
+        testCase(p3.slopeTo(p1) == 0);
+        testCase(p0.slopeTo(p1) == 1);
+    }
+
+    private static void checkCompareTo() {
+        Point p1 = new Point(1, 1);
+        Point p2 = new Point(1, 0);
+        Point p3 = new Point(0, 1);
+        Point p0 = new Point(0, 0);
+
+
+        testCase(p1.compareTo(p1) == 0);
+        testCase(p2.compareTo(p2) == 0);
+        testCase(p3.compareTo(p3) == 0);
+
+        testCase(p1.compareTo(p2) == 1);
+        testCase(p1.compareTo(p3) == 1);
+
+        testCase(p2.compareTo(p3) == -1);
+    }
+
+    private static void testCase(boolean testCase) {
+        if (testCase == true) {
+            println("PASSED");
+        } else {
+            println("FAILED");
+        }
+    }
+
+    /**
      * Draws this point to standard draw.
      */
     public void draw() {
@@ -112,7 +162,6 @@ public class Point implements Comparable<Point> {
         return new SlopeOrder();
     }
 
-
     /**
      * Returns a string representation of this point.
      * This method is provide for debugging;
@@ -123,7 +172,6 @@ public class Point implements Comparable<Point> {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
-
 
     private class SlopeOrder implements Comparator<Point> {
 
@@ -139,57 +187,6 @@ public class Point implements Comparable<Point> {
             } else {
                 return 0;
             }
-        }
-    }
-
-
-    /**
-     * Unit tests the Point data type.
-     */
-    public static void main(String[] args) {
-
-        checkCompareTo();
-
-        checkSlopeTo();
-
-        System.out.println(new Point(1,1) == new Point(1,1));
-
-    }
-
-    private static void checkSlopeTo() {
-        Point p1 = new Point(1, 1);
-        Point p2 = new Point(1, 0);
-        Point p3 = new Point(0, 1);
-        Point p0 = new Point(0, 0);
-
-        testCase(p1.slopeTo(p1) == Double.NEGATIVE_INFINITY);
-        testCase(p1.slopeTo(p2) == Double.POSITIVE_INFINITY);
-        testCase(p3.slopeTo(p1) == 0);
-        testCase(p0.slopeTo(p1) == 1);
-    }
-
-    private static void checkCompareTo() {
-        Point p1 = new Point(1, 1);
-        Point p2 = new Point(1, 0);
-        Point p3 = new Point(0, 1);
-        Point p0 = new Point(0, 0);
-
-
-        testCase(p1.compareTo(p1) == 0);
-        testCase(p2.compareTo(p2) == 0);
-        testCase(p3.compareTo(p3) == 0);
-
-        testCase(p1.compareTo(p2) == 1);
-        testCase(p1.compareTo(p3) == 1);
-
-        testCase(p2.compareTo(p3) == -1);
-    }
-
-    private static void testCase(boolean testCase) {
-        if (testCase == true) {
-            println("PASSED");
-        } else {
-            println("FAILED");
         }
     }
 

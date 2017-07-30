@@ -3,7 +3,6 @@ package KdTrees;
 import edu.princeton.cs.algs4.*;
 
 
-
 /**
  * Created by user on 17.07.17.
  */
@@ -15,46 +14,37 @@ public class KdTree {
     private Point2D nearestPoint;
     private double nearestPointSquaredDistance;
 
-    private static class KdTreeNode implements Comparable<KdTreeNode> {
-        private Point2D point;
-        private RectHV nodeArea;
-        private KdTreeNode left;
-        private KdTreeNode right;
-
-        @Override
-        public int compareTo(KdTreeNode that) {
-            if (this.point.equals(that.point)) {
-                return 0;
-            }
-            if (this.isVertical) {
-                if (this.point.x() >= that.point.x()) return 1;
-                if (this.point.x() < that.point.x()) return -1;
-            }
-
-            if (!this.isVertical) {
-                if (this.point.y() >= that.point.y()) return 1;
-                if (this.point.y() < that.point.y()) return -1;
-            }
-            return 0;
-        }
-
-        private boolean isVertical;
-
-        private KdTreeNode(Point2D point, RectHV nodeArea, boolean isVertical) {
-            this.point = point;
-            this.nodeArea = nodeArea;
-            this.isVertical = isVertical;
-            this.left = null;
-            this.right = null;
-        }
-    }
-
     /**
      * construct an empty set of points
      */
     public KdTree() {
         mSize = 0;
         mRoot = null;
+    }
+
+    public static void main(String[] args) {
+
+        KdTree pointSet = new KdTree();
+        String fileName = args[0];
+        In in = new In(fileName);
+        while (!in.isEmpty()) {
+            double x = in.readDouble();
+            double y = in.readDouble();
+            Point2D point = new Point2D(x, y);
+            pointSet.insert(point);
+            //StdOut.println("point:" + point);
+            //StdOut.println("nearest: " + pointSet.nearest(point));
+        }
+        RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
+        StdDraw.setPenColor(StdDraw.RED);
+        recangle.draw();
+        Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
+        PointSET pointsInsideRectangleSet = new PointSET();
+        for (Point2D point : pointsInsideRectangle) {
+            pointsInsideRectangleSet.insert(point);
+        }
+        pointsInsideRectangleSet.draw();
+
     }
 
     /**
@@ -247,10 +237,10 @@ public class KdTree {
     }
 
     private void range(KdTreeNode currentNode, RectHV rectangle) {
-        if(currentNode == null) return;
+        if (currentNode == null) return;
 
-        if(currentNode.nodeArea.intersects(rectangle)) {
-            if(rectangle.contains(currentNode.point)) {
+        if (currentNode.nodeArea.intersects(rectangle)) {
+            if (rectangle.contains(currentNode.point)) {
                 pointsInsideRectangle.push(currentNode.point);
             }
             range(currentNode.left, rectangle);
@@ -276,10 +266,10 @@ public class KdTree {
 
     private void nearest(KdTreeNode currentNode, Point2D inputPoint) {
 
-        if(currentNode == null) return;
+        if (currentNode == null) return;
 
-        if(currentNode.nodeArea.contains(inputPoint)) {
-            if(currentNode.point.distanceSquaredTo(inputPoint) <
+        if (currentNode.nodeArea.contains(inputPoint)) {
+            if (currentNode.point.distanceSquaredTo(inputPoint) <
                     nearestPointSquaredDistance) {
                 nearestPoint = currentNode.point;
                 nearestPointSquaredDistance = inputPoint.distanceSquaredTo(nearestPoint);
@@ -295,29 +285,37 @@ public class KdTree {
         if (object == null) throw new IllegalArgumentException();
     }
 
-    public static void main(String[] args) {
+    private static class KdTreeNode implements Comparable<KdTreeNode> {
+        private Point2D point;
+        private RectHV nodeArea;
+        private KdTreeNode left;
+        private KdTreeNode right;
+        private boolean isVertical;
 
-        KdTree pointSet = new KdTree();
-        String fileName = args[0];
-        In in = new In(fileName);
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D point = new Point2D(x, y);
-            pointSet.insert(point);
-            //StdOut.println("point:" + point);
-            //StdOut.println("nearest: " + pointSet.nearest(point));
+        private KdTreeNode(Point2D point, RectHV nodeArea, boolean isVertical) {
+            this.point = point;
+            this.nodeArea = nodeArea;
+            this.isVertical = isVertical;
+            this.left = null;
+            this.right = null;
         }
-        RectHV recangle = new RectHV(0.1, 0.2, 0.4, 0.5);
-        StdDraw.setPenColor(StdDraw.RED);
-        recangle.draw();
-        Iterable<Point2D> pointsInsideRectangle = pointSet.range(recangle);
-        PointSET pointsInsideRectangleSet = new PointSET();
-        for (Point2D point : pointsInsideRectangle) {
-            pointsInsideRectangleSet.insert(point);
-        }
-        pointsInsideRectangleSet.draw();
 
+        @Override
+        public int compareTo(KdTreeNode that) {
+            if (this.point.equals(that.point)) {
+                return 0;
+            }
+            if (this.isVertical) {
+                if (this.point.x() >= that.point.x()) return 1;
+                if (this.point.x() < that.point.x()) return -1;
+            }
+
+            if (!this.isVertical) {
+                if (this.point.y() >= that.point.y()) return 1;
+                if (this.point.y() < that.point.y()) return -1;
+            }
+            return 0;
+        }
     }
 
 }

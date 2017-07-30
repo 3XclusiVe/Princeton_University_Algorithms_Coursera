@@ -9,14 +9,6 @@ public class Board {
     private int[] mBlock;
     private int mBoardSize;
     private int mEmptyBlockIndex;
-
-    private class Neighbor {
-        private boolean UP = true;
-        private boolean RIGHT = true;
-        private boolean DOWN = true;
-        private boolean LEFT = true;
-    }
-
     private Neighbor mNeighbor = new Neighbor();
 
     /**
@@ -52,6 +44,41 @@ public class Board {
                 mBlock[index] = blocks[row][column];
                 index++;
             }
+        }
+
+    }
+
+    /**
+     * Unit-test like
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        int BoardArray[][] = new int[3][3];
+        BoardArray[0][0] = 0;
+        BoardArray[0][1] = 1;
+        BoardArray[0][2] = 3;
+
+        BoardArray[1][0] = 4;
+        BoardArray[1][1] = 2;
+        BoardArray[1][2] = 5;
+
+        BoardArray[2][0] = 7;
+        BoardArray[2][1] = 8;
+        BoardArray[2][2] = 6;
+
+        Board board = new Board(BoardArray);
+        System.out.println(board);
+        System.out.println(board.hamming());
+        System.out.println(board.manhattan());
+        System.out.println(board.isGoal());
+        System.out.println(board.twin());
+
+        for (Board neighborBoard : board.neighbors()) {
+            System.out.println(neighborBoard);
+            System.out.println(neighborBoard.hamming());
+            System.out.println(neighborBoard.manhattan());
+            System.out.println(neighborBoard.isGoal());
         }
 
     }
@@ -274,39 +301,11 @@ public class Board {
 
     }
 
-    /**
-     * Unit-test like
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        int BoardArray[][] = new int[3][3];
-        BoardArray[0][0] = 0;
-        BoardArray[0][1] = 1;
-        BoardArray[0][2] = 3;
-
-        BoardArray[1][0] = 4;
-        BoardArray[1][1] = 2;
-        BoardArray[1][2] = 5;
-
-        BoardArray[2][0] = 7;
-        BoardArray[2][1] = 8;
-        BoardArray[2][2] = 6;
-
-        Board board = new Board(BoardArray);
-        System.out.println(board);
-        System.out.println(board.hamming());
-        System.out.println(board.manhattan());
-        System.out.println(board.isGoal());
-        System.out.println(board.twin());
-
-        for(Board neighborBoard : board.neighbors()) {
-            System.out.println(neighborBoard);
-            System.out.println(neighborBoard.hamming());
-            System.out.println(neighborBoard.manhattan());
-            System.out.println(neighborBoard.isGoal());
-        }
-
+    private class Neighbor {
+        private boolean UP = true;
+        private boolean RIGHT = true;
+        private boolean DOWN = true;
+        private boolean LEFT = true;
     }
 
 }
