@@ -24,3 +24,11 @@ http://coursera.cs.princeton.edu/algs4/assignments/collinear.html
         Grade: 89%
   
       ![alt tag](https://github.com/3XclusiVe/Princeton_University_Algorithms_Coursera/blob/master/src/Doc/_3_Pattern_Recognition.gif)
+      
+      
+4. 8Puzzle: Write a program to solve the 8-puzzle problem (and its natural generalizations) using the A* search algorithm. Used priority queue to find the most efficient solution to a given 8-puzzle problem. 
+http://coursera.cs.princeton.edu/algs4/assignments/8puzzle.html
+
+        Grade: 95%
+  
+      ![alt tag](https://github.com/3XclusiVe/Princeton_University_Algorithms_Coursera/blob/master/src/Doc/_4_Puzzle.jpg)
