@@ -17,4 +17,10 @@ http://coursera.cs.princeton.edu/algs4/assignments/queues.html
 
         Grade: 96%
   
-      ![alt tag](https://raw.githubusercontent.com/3XclusiVe/Princeton_University_Algorithms_Coursera/master/src/Doc/_1_Percolation.gif)
+
+3. Collinear: Write a program to recognize line patterns in a given set of points. Use sorting by slope to efficiently determine collinearity in a set of points.
+http://coursera.cs.princeton.edu/algs4/assignments/collinear.html
+
+        Grade: 89%
+  
+      ![alt tag](https://github.com/3XclusiVe/Princeton_University_Algorithms_Coursera/blob/master/src/Doc/_3_Pattern_Recognition.gif)
