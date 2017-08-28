@@ -1,8 +1,10 @@
-package Pattern_Recognition;
+package _3_Pattern_Recognition;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+
+import java.io.IOException;
 
 /**
  * Representation of Client
@@ -30,9 +32,17 @@ public class SampleClient {
         }
         StdDraw.show();
 
+
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
         // print and draw the line segments
-        FastCollinearPoints collinear = new FastCollinearPoints(points);
-        //BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        //FastCollinearPoints collinear = new FastCollinearPoints(points);
+
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();

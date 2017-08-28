@@ -1,4 +1,4 @@
-package Deques_and_Randomized_Queues;
+package _2_Deques_and_Randomized_Queues;
 
 import edu.princeton.cs.algs4.StdRandom;
 

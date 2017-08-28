@@ -1,4 +1,4 @@
-package Pattern_Recognition;
+package _3_Pattern_Recognition;
 
 /******************************************************************************
  *  Compilation:  javac Point.java
