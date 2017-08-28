@@ -1,4 +1,4 @@
-package KdTrees; /******************************************************************************
+package _5_KdTrees; /******************************************************************************
  *  Compilation:  javac NearestNeighborVisualizer.java
  *  Execution:    java NearestNeighborVisualizer input.txt
  *  Dependencies: PointSET.java KdTree.java

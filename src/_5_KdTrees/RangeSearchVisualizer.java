@@ -1,4 +1,4 @@
-package KdTrees; /******************************************************************************
+package _5_KdTrees; /******************************************************************************
  *  Compilation:  javac RangeSearchVisualizer.java
  *  Execution:    java RangeSearchVisualizer input.txt
  *  Dependencies: PointSET.java KdTree.java

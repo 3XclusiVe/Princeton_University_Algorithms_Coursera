@@ -1,4 +1,4 @@
-package KdTrees;
+package _5_KdTrees;
 
 import edu.princeton.cs.algs4.*;
 
