@@ -1,4 +1,4 @@
-package Puzzle;
+package _4_Puzzle;
 
 import edu.princeton.cs.algs4.In;
 
